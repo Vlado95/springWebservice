@@ -1,0 +1,145 @@
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <title>Livre Gallery</title>
+  <link rel="stylesheet" href="gstyle2.css">
+  <script src="jquery-3.1.1.js"></script>
+  <script src="biblio.js"></script>
+</head>
+<meta charset="UTF-8">
+<title>Appel des WS Livres</title>
+</head>
+
+<body>
+<div class="main_left1">
+	<section >
+	<nav>
+	    <ul>
+	        <li><a href="#" onclick="CallServiceVersion()">Version</a></li>
+	    </ul>
+	</nav>
+	</section>
+</div>
+<p>Version des services :</p>
+<p id="version"></p>
+
+
+
+
+
+<div class="main_left1">
+	<section >
+	<nav>
+	    <ul>
+	        <li><a href="#" onclick="CallServiceVersion()">Version</a></li>
+	        <li><a href="#" onclick="CallLivres()">Livres</a></li>
+			<li><a href="#" onclick=" CallEditeurs()">Editeurs</a></li>
+			<li><a href="">Auteurs</a></li>
+	    </ul>
+	</nav>
+	</section>
+</div>
+
+<div class="main_right">
+<p>Version des services :</p>
+<p id="version"></p>
+<table id="content" border='1'>
+	
+</table>
+<table id="edit" border='1'></table>
+</div>
+
+
+
+
+
+
+<script type="text/javascript">
+function CallServiceVersion()
+{   	
+	var webServiceURL = 'http://localhost:8080/springWebservice/ws/rs/getVersion' ;
+	var params = null ;
+	alert('GetVersion :'+webServiceURL);
+	
+    $.ajax({
+    	cache : false,
+        url: webServiceURL, 
+        data: params ,
+        type: "GET",
+        dataType: 'json',
+        contentType: "application/json",
+        processData : false,
+        success: OnSuccessVer, 
+        error: OnErrorStd
+    });
+    return false;
+}
+
+function OnSuccessVer(data, status)
+{   		
+		alert('Return ('+data+') ') ;
+		
+		var ver = document.getElementById('version') ;
+		ver.innerHTML = "" ; // Release When other pass 
+		
+		ver.innerHTML += data ;				
+}
+
+function CallLivres()
+{   	
+	var webServiceURL = 'http://localhost:8080/springWebservice/ws/rs/livres' ;
+	var params = null ;
+	alert('Livres :'+webServiceURL);
+    $.ajax({
+    	cache : false,
+        url: webServiceURL, 
+        data: params ,
+        type: "GET",
+        dataType: 'json',
+        contentType: "application/json",
+        processData : false,
+        success: OnSuccess, 
+        error: OnErrorStd
+    });
+    return false;
+}
+
+function OnSuccess(data, status)
+{   		
+	var cont = document.getElementById('content') ;
+	$.each(data, function(index, element){
+		cont.innerHTML += '<tr><td>' + element.id  + '</td><td>'+ element.titre + '</td></tr>';	
+})
+}
+
+
+function CallEditeurs()
+{   	
+	var webServiceURL = 'http://localhost:8080/springWebservice/ws/rs/editeurs' ;
+	var params = null ;
+	alert('GetEditeurs :'+webServiceURL);
+    $.ajax({
+    	cache : false,
+        url: webServiceURL, 
+        data: params ,
+        type: "GET",
+        dataType: 'json',
+        contentType: "application/json",
+        processData : false,
+        success: OnSuccess1, 
+        error: OnErrorStd
+    });
+    return false;
+}
+
+function OnSuccess1(data, status)
+{   		
+	var edit = document.getElementById('edit') ;
+	$.each(data, function(index, element){
+		edit.innerHTML += '<tr><td>' + element.id + '</td><td> '+ element.nom + ' '+ '</td></tr>';	
+})
+}
+</script>
+
+</body>
+</html>

@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="">
+<meta name="author" content="">
+
+<title>Welcome page</title>
+
+<!-- Bootstrap Core CSS -->
+<link href="bootstrap/css/bootstrap.min.css" rel="stylesheet">
+
+<!-- Custom CSS -->
+<link href="bootstrap/css/small-business.css" rel="stylesheet">
+
+<!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+<!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+<!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+ <script src="biblio.js"></script>
+</head>
+
+<body>
+
+	<!-- Navigation -->
+	<nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+		<div class="container">
+			<!-- Brand and toggle get grouped for better mobile display -->
+			<div class="navbar-header">
+				<button type="button" class="navbar-toggle" data-toggle="collapse"
+					data-target="#bs-example-navbar-collapse-1">
+					<span class="sr-only">Toggle navigation</span> <span
+						class="icon-bar"></span> <span class="icon-bar"></span> <span
+						class="icon-bar"></span>
+				</button>
+				<a class="navbar-brand" href="#"> <img
+					src="http://placehold.it/150x50&text=Logo" alt="">
+				</a>
+			</div>
+			<!-- Collect the nav links, forms, and other content for toggling -->
+			<div class="collapse navbar-collapse"
+				id="bs-example-navbar-collapse-1">
+				<ul class="nav navbar-nav">
+					<li><a href="#">Home</a></li>
+					<li><a href="#" onclick=" CallLivres()">Livres</a></li>
+					<li><a href="#">Auteurs</a></li>
+					<li><a href="#" onclick=" CallEditeurs()">Editeurs</a></li>
+				</ul>
+			</div>
+			<!-- /.navbar-collapse -->
+		</div>
+		<!-- /.container -->
+	</nav>
+
+	<!-- Page Content -->
+	<div class="container">
+
+		<!-- Heading Row -->
+		<div class="row">
+			<div class="col-md-8">
+			<div id="result"></div>
+			</div>
+			<!-- /.col-md-8 -->
+			<div class="col-md-4">
+				<h1>kllll</h1>
+				blalba
+			</div>
+		</div>
+		<hr>
+		<div class="row">
+			<div class="col-lg-12">
+				<div class="well text-center">This is a well that is a great
+					spot for a business tagline or phone number for easy access!</div>
+			</div>
+		</div>
+
+		<!-- Content Row -->
+		<div id="" class="row">
+			<div class="col-md-4">
+				<h2>Heading 1</h2>
+
+			</div>
+			<!-- /.col-md-4 -->
+			<div class="col-md-4">
+				<h2>Heading 2</h2>
+
+			</div>
+			<!-- /.col-md-4 -->
+			<div class="col-md-4">
+				<h2>Heading 3</h2>
+
+			</div>
+			<!-- /.col-md-4 -->
+		</div>
+
+	</div>
+	<script src="bootstrap/js/jquery.js"></script>
+
+	<!-- Bootstrap Core JavaScript -->
+	<script src="bootstrap/js/bootstrap.min.js"></script>
+
+	<script type="text/javascript">
+		function CallServiceVersion() {
+			var webServiceURL = 'http://localhost:8080/springWebservice/ws/rs/getVersion';
+			var params = null;
+			alert('GetVersion :' + webServiceURL);
+
+			$.ajax({
+				cache : false,
+				url : webServiceURL,
+				data : params,
+				type : "GET",
+				dataType : 'json',
+				contentType : "application/json",
+				processData : false,
+				success : OnSuccessVer,
+				error : OnErrorStd
+			});
+			return false;
+		}
+
+		function OnSuccessVer(data, status) {
+			alert('Return (' + data + ') ');
+
+			var ver = document.getElementById('version');
+			ver.innerHTML = ""; // Release When other pass 
+
+			ver.innerHTML += data;
+		}
+
+		function CallLivres() {
+			var webServiceURL = 'http://localhost:8080/springWebservice/ws/rs/livres';
+			var params = null;
+			alert('Livres :' + webServiceURL);
+			$.ajax({
+				cache : false,
+				url : webServiceURL,
+				data : params,
+				type : "GET",
+				dataType : 'json',
+				contentType : "application/json",
+				processData : false,
+				success : OnSuccess,
+				error : OnErrorStd
+			});
+			return false;
+		}
+
+		function OnSuccess(data, status) {
+			
+			var HTML = "<table border=1 class="+"table"+"><thead>"+
+			"<tr><th>ID</th> <th>TITRE</th> </tr> </thead> <tbody><tr>";
+			$.each(data, function(index, element) {
+				HTML += '<tr><td>' + element.id + '</td><td>'
+				+ element.titre + '</td></tr>';
+			})
+			HTML += "</tr></table>";
+			document.getElementById("result").innerHTML = HTML;
+			
+		}
+
+		function CallEditeurs() {
+			var webServiceURL = 'http://localhost:8080/springWebservice/ws/rs/editeurs';
+			var params = null;
+			alert('GetEditeurs :' + webServiceURL);
+			$.ajax({
+				cache : false,
+				url : webServiceURL,
+				data : params,
+				type : "GET",
+				dataType : 'json',
+				contentType : "application/json",
+				processData : false,
+				success : OnSuccess1,
+				error : OnErrorStd
+			});
+			return false;
+		}
+
+		function OnSuccess1(data, status) {
+			
+			var HTML = "<table border=1 class="+"table"+"><thead>"+
+			"<tr><th>ID</th> <th>NOM</th> </tr> </thead> <tbody><tr>";
+			$.each(data, function(index, element) {
+				HTML += '<tr><td>' + element.id + '</td><td> '
+						+ element.nom + ' ' + '</td></tr>';
+			})
+			HTML += "</tr></table>";
+			document.getElementById("result").innerHTML = HTML;
+		}
+	</script>
+</body>
+
+</html>
