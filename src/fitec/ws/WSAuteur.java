@@ -8,6 +8,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -58,6 +59,13 @@ public class WSAuteur extends Services<Auteur> {
 	public @ResponseBody ResponseEntity<?> getAuteur(@PathVariable("Str") String str) throws InterruptedException {
 		List<Auteur> l = service.selectLike(str);
 		return new ResponseEntity<>(l, HttpStatus.OK);
+	}
+	
+	
+	@RequestMapping(value = "/addAuteur", method = RequestMethod.POST, consumes=MediaType.APPLICATION_JSON_VALUE)
+	public @ResponseBody ResponseEntity<?> insertAuteur(@RequestBody Auteur auteur) throws InterruptedException {		
+			service.insert(auteur);	
+		return new ResponseEntity<>(HttpStatus.OK);
 	}
 	
 //	@RequestMapping(value = "/getVersionA", method = RequestMethod.GET, produces=MediaType.APPLICATION_JSON_VALUE)
